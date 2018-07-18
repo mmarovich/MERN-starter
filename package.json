@@ -4,13 +4,14 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "server": "node server.js",
-    "client": "node scripts/start-client.js",
-    "start": "concurrently \"nodemon server.js\" \"npm run client\"",
-    "build": "node scripts/build.js",
+    "start": "if-env NODE_ENV=production && npm run start:prod || npm run start:dev",
+    "start:prod": "node server.js",
+    "start:dev": "concurrently \"nodemon --ignore 'client/*'\" \"npm run client\"",
+    "client": "cd client && npm run start",
     "seed": "node scripts/seedDB.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "installDeps": "yarn && cd client && yarn"
+    "install": "cd client && yarn install",
+    "build": "cd client && npm run build",
+    "heroku-postbuild": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -22,11 +23,15 @@
     "url": "https://github.com/mmarovich/MERN-starter/issues"
   },
   "homepage": "https://github.com/mmarovich/MERN-starter#readme",
-  "dependencies": {
-    "body-parser": "^1.18.2",
-    "express": "^4.16.3"
-  },
   "devDependencies": {
-    "concurrently": "^3.5.1"
+    "concurrently": "^3.5.0",
+    "nodemon": "^1.11.0"
+  },
+  "dependencies": {
+    "axios": "^0.16.2",
+    "body-parser": "^1.17.2",
+    "express": "^4.15.4",
+    "mongoose": "^5.0.17",
+    "if-env": "^1.0.4"
   }
 }
